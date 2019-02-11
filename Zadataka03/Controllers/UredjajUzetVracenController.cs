@@ -85,6 +85,29 @@ namespace Zadataka03.Controllers
             return Ok(uredjajiG);
         }
 
+        /// <summary>
+        /// Uvid kada je koja osoba koristila koji uredja (u periodu od-do).
+        /// </summary>
+        /// <param name="godinaA">The godina a.</param>
+        /// <param name="godinaB">The godina b.</param>
+        /// <returns></returns>
+        [HttpGet("GetODDO/{godinaA}/{godinaB}")]
+        public IActionResult GetODDO(string godinaA, string godinaB)
+        {
+            var uredjajA =
+                _context.UredjajUzetVraceni
+                    .Where(c => c.Uzet.Year.ToString().Contains(godinaA) || c.Uzet.Year.ToString().Contains(godinaB)).Select(n=>new
+                    {
+                        Ime = n.Osoba.Ime,
+                        Prezime = n.Osoba.Prezime,
+                        Uredjaj = n.Uredjaj.ImeUredjaja,
+                        Kancelarija = n.Osoba.Kancelarija.Opis
+                    }).ToList();
+
+
+            return Ok(uredjajA);
+
+        }
 
 
 

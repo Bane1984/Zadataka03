@@ -131,6 +131,14 @@
             <param name="godina">The godina.</param>
             <returns></returns>
         </member>
+        <member name="M:Zadataka03.Controllers.UredjajUzetVracenController.GetODDO(System.String,System.String)">
+            <summary>
+            Uvid kada je koja osoba koristila koji uredja (u periodu od-do).
+            </summary>
+            <param name="godinaA">The godina a.</param>
+            <param name="godinaB">The godina b.</param>
+            <returns></returns>
+        </member>
         <member name="M:Zadataka03.Controllers.UredjajUzetVracenController.DeleteUredjaja(System.Int32)">
             <summary>
             Brisanje UredjajUzetVraceni.
