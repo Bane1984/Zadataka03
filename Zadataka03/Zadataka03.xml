@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Zadataka03</name>
+    </assembly>
+    <members>
+        <member name="M:Zadataka03.Controllers.KancelarijaController.GetKancelarija">
+            <summary>
+            Uzmi kancelarije.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.KancelarijaController.GetKancelarija(System.Int32)">
+            <summary>
+            Uzmi kancelarije po ID-u.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.KancelarijaController.PostKancelarija(Zadataka03.Models.Kancelarija)">
+            <summary>
+            Kreiraj kancelariju.
+            </summary>
+            <param name="kancelar">The kancelar.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.KancelarijaController.PutKancelarija(System.Int32,Zadataka03.Models.Kancelarija)">
+            <summary>
+            Apdejt kancelarije.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="kanc">The kanc.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.KancelarijaController.DeleteKancelarija(System.Int32)">
+            <summary>
+            DBrisanje kancelarije sa proslijedjenim ID-em.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>Odgovor kao rezultat brisanja kancelarije.</returns>
+            <response code="200">Ako je kancelarija obrisana uspjesno.</response>
+            <response code="500">Ako je bilo greske na serveru.</response>
+        </member>
+        <member name="M:Zadataka03.Controllers.OsobaController.GetOsoba">
+            <summary>
+            Uzmi osobe.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.OsobaController.GetOsobu(System.Int32)">
+            <summary>
+            Uzmi osobu po ID-u sa informacijom u kojoj je kancelariji i koje uredjaje koristi..
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.OsobaController.PostOsoba(Zadataka03.DTO.OsobaDTO)">
+            <summary>
+            Kreiraj osobu.
+            </summary>
+            <param name="os">The os.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.OsobaController.PutOsoba(System.Int32,Zadataka03.Models.Osoba)">
+            <summary>
+            Apdejt osobe.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="osob">The osob.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.OsobaController.DeleteOsobe(System.Int32)">
+            <summary>
+            Brisanje osobe.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajController.GetUredjaj">
+            <summary>
+            Uzmi uredjaje.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajController.GetUredjaj(System.Int32)">
+            <summary>
+            Uzmi uredjaje po ID-u.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajController.PostUredjaj(Zadataka03.Models.Uredjaj)">
+            <summary>
+            Kreiraj Uredjaj.
+            </summary>
+            <param name="ured">The ured.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajController.PutUredjaj(System.Int32,Zadataka03.Models.Uredjaj)">
+            <summary>
+            Apdejt Uredjaja.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="uredj">The uredj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajController.DeleteUredjaja(System.Int32)">
+            <summary>
+            Brisanje uredjaja.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajUzetVracenController.GetUredjajUzetVracen">
+            <summary>
+            Uzmi UredjajUzetVraceni.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajUzetVracenController.GetUredjajUzetVracen(System.Int32)">
+            <summary>
+            Uzmi UredjajUzetVraceni po ID-u.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajUzetVracenController.GetODDO(System.String)">
+            <summary>
+            Uzima sve osobe kao i koriscene uredjaje i kancelarije u kojima su se nalazili u navedenoj godini.
+            </summary>
+            <param name="godina">The godina.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UredjajUzetVracenController.DeleteUredjaja(System.Int32)">
+            <summary>
+            Brisanje UredjajUzetVraceni.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
