@@ -17,28 +17,21 @@ namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KancelarijaController : ControllerBase
+    public class KancelarijaController : BaseController<Kancelarija>
     {
-        public readonly ZadatakContext _context;
-
-        public KancelarijaController(ZadatakContext context)
+        public KancelarijaController(ZadatakContext context):base(context)
         {
-            _context = context;
         }
 
         /// <summary>
         /// Uzmi kancelarije.
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult<IEnumerable<KancelarijaDTO>> GetKancelarija()
+        [HttpGet("get")]
+        public IActionResult Get()
         {
-            var kanc = from os in _context.Kancelarije
-                select new KancelarijaDTO()
-                {
-                    Opis = os.Opis
-                };
-            return Ok(kanc);
+            
+            return Ok(base.Get());
         }
 
         /// <summary>
@@ -46,22 +39,10 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<KancelarijaDTO>> GetKancelarija(int id)
+        [HttpGet("GetKancelarija/{id}")]
+        public IActionResult GetKancelarija(int id)
         {
-            //var kancelarija = _context.Kancelarije.FindAsync(id);
-
-            //var kancelarija = _context.Kancelarije.Include(c => c.Osobe).Where(c => c.KancelarijaId == id);
-            //var kancelarija = _context.Kancelarije.Where(c => c.KancelarijaId == id).Select(c => c.Osobe);
-
-            var kancelarija = _context.Kancelarije.Where(c => c.KancelarijaId == id);
-
-            if (kancelarija == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(kancelarija.ToList());
+            return Ok(base.Get(id));
         }
 
         /// <summary>
@@ -69,29 +50,10 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="kancelar">The kancelar.</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("PostKancelarija/{kancelar}")]
         public IActionResult PostKancelarija(Kancelarija kancelar)
         {
-            using (var trans = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var dtokancel = new KancelarijaDTO()
-                    {
-                        Opis = kancelar.Opis
-                    };
-                    _context.Kancelarije.Add(kancelar);
-                    _context.SaveChanges();
-                    trans.Commit();
-                    return Ok(_context.Kancelarije.Where(c => c.Opis == dtokancel.Opis));
-                }
-                catch (Exception)
-                {
-
-                    return BadRequest();
-                }
-            }
-
+            return Ok(base.Create(kancelar));
         }
 
         /// <summary>
@@ -103,28 +65,7 @@ namespace Zadataka03.Controllers
         [HttpPut]
         public IActionResult PutKancelarija(int id, Kancelarija kanc)
         {
-            using (var trans = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    if (id != kanc.KancelarijaId)
-                    {
-                        return BadRequest();
-                    }
-
-                    var kancelarija = _context.Kancelarije.Find(id);
-                    kancelarija.Opis = kanc.Opis;
-                    _context.SaveChanges();
-
-                    return Ok($"Kancelarija {kancelarija} je apdejtovana!");
-                }
-                catch (Exception)
-                {
-
-                    return BadRequest();
-                }
-            }
-                
+            return Ok(base.Update(id, kanc));
         }
 
         /// <summary>
@@ -136,21 +77,10 @@ namespace Zadataka03.Controllers
         /// <response code="500">Ako je bilo greske na serveru.</response>
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteKancelarija/{id}")]
         public IActionResult DeleteKancelarija(int id)
         {
-                var kancel = _context.Kancelarije.Find(id);
-
-                if (kancel == null)
-                {
-                    return NotFound();
-                }
-
-                _context.Kancelarije.Remove(kancel);
-                _context.SaveChanges();
-           
-
-            return Ok($"Kancelarija {kancel.Opis} je obrisana.");
+            return Ok(base.Delete(id));
         }
     }
 }

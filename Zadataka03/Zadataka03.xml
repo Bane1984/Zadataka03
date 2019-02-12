@@ -4,7 +4,42 @@
         <name>Zadataka03</name>
     </assembly>
     <members>
-        <member name="M:Zadataka03.Controllers.KancelarijaController.GetKancelarija">
+        <member name="M:Zadataka03.Controllers.BaseController`1.Get">
+            <summary>
+            Uzimanje svega iz tebele.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseController`1.Get(System.Int32)">
+            <summary>
+            Pretraga po ID-u.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseController`1.Create(`0)">
+            <summary>
+            Kreiranje objekta.
+            </summary>
+            <param name="objekat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseController`1.Update(System.Int32,`0)">
+            <summary>
+            Mijenjanje objekta.
+            </summary>
+            <param name="id"></param>
+            <param name="objekat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseController`1.Delete(System.Int32)">
+            <summary>
+            Brisanje objekta.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.KancelarijaController.Get">
             <summary>
             Uzmi kancelarije.
             </summary>
@@ -41,7 +76,7 @@
             <response code="200">Ako je kancelarija obrisana uspjesno.</response>
             <response code="500">Ako je bilo greske na serveru.</response>
         </member>
-        <member name="M:Zadataka03.Controllers.OsobaController.GetOsoba">
+        <member name="M:Zadataka03.Controllers.OsobaController.Get">
             <summary>
             Uzmi osobe.
             </summary>
@@ -54,35 +89,29 @@
             <param name="id">The identifier.</param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.OsobaController.PostOsoba(Zadataka03.DTO.OsobaDTO)">
+        <member name="M:Zadataka03.Controllers.OsobaController.PostOsoba(Zadataka03.Models.Osoba)">
             <summary>
             Kreiraj osobu.
             </summary>
-            <param name="os">The os.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Zadataka03.Controllers.OsobaController.PutOsoba(System.Int32,Zadataka03.Models.Osoba)">
-            <summary>
-            Apdejt osobe.
-            </summary>
-            <param name="id">The identifier.</param>
             <param name="osob">The osob.</param>
             <returns></returns>
         </member>
         <member name="M:Zadataka03.Controllers.OsobaController.DeleteOsobe(System.Int32)">
             <summary>
-            Brisanje osobe.
+            Brisanje osobe sa proslijedjenim ID-em.
             </summary>
             <param name="id">The identifier.</param>
-            <returns></returns>
+            <returns>Odgovor kao rezultat brisanja osobe.</returns>
+            <response code="200">Ako je osoba obrisana uspjesno.</response>
+            <response code="500">Ako je bilo greske na serveru.</response>
         </member>
-        <member name="M:Zadataka03.Controllers.UredjajController.GetUredjaj">
+        <member name="M:Zadataka03.Controllers.UredjajController.Get">
             <summary>
             Uzmi uredjaje.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.UredjajController.GetUredjaj(System.Int32)">
+        <member name="M:Zadataka03.Controllers.UredjajController.GetUredjaje(System.Int32)">
             <summary>
             Uzmi uredjaje po ID-u.
             </summary>
@@ -91,25 +120,27 @@
         </member>
         <member name="M:Zadataka03.Controllers.UredjajController.PostUredjaj(Zadataka03.Models.Uredjaj)">
             <summary>
-            Kreiraj Uredjaj.
+            Kreiraj uredjaj.
             </summary>
             <param name="ured">The ured.</param>
             <returns></returns>
         </member>
         <member name="M:Zadataka03.Controllers.UredjajController.PutUredjaj(System.Int32,Zadataka03.Models.Uredjaj)">
             <summary>
-            Apdejt Uredjaja.
+            Apdejt Uredjaj.
             </summary>
             <param name="id">The identifier.</param>
-            <param name="uredj">The uredj.</param>
+            <param name="ured">The ured.</param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.UredjajController.DeleteUredjaja(System.Int32)">
+        <member name="M:Zadataka03.Controllers.UredjajController.DeleteUredjaj(System.Int32)">
             <summary>
-            Brisanje uredjaja.
+            Brisanje uredjaja sa proslijedjenim ID-em.
             </summary>
             <param name="id">The identifier.</param>
-            <returns></returns>
+            <returns>Odgovor kao rezultat brisanja uredjaja.</returns>
+            <response code="200">Ako je uredjaj obrisan uspjesno.</response>
+            <response code="500">Ako je bilo greske na serveru.</response>
         </member>
         <member name="M:Zadataka03.Controllers.UredjajUzetVracenController.GetUredjajUzetVracen">
             <summary>

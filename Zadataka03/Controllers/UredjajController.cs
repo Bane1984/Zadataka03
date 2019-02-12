@@ -12,24 +12,23 @@ namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UredjajController : ControllerBase
+    public class UredjajController : BaseController<Uredjaj>
     {
-        public readonly ZadatakContext _context;
 
-        public UredjajController(ZadatakContext context)
+
+        public UredjajController(ZadatakContext context) : base(context)
         {
-            _context = context;
-            _context.Database.EnsureCreated();
         }
 
         /// <summary>
         /// Uzmi uredjaje.
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult<IEnumerable<Uredjaj>> GetUredjaj()
+        [HttpGet("get")]
+        public IActionResult Get()
         {
-            return _context.Uredjaji.ToList();
+
+            return Ok(base.Get());
         }
 
         /// <summary>
@@ -37,100 +36,48 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Uredjaj>> GetUredjaj(int id)
+        [HttpGet("GetUredjaje/{id}")]
+        public IActionResult GetUredjaje(int id)
         {
-            var ured = _context.Uredjaji.Where(c => c.UredjajId == id);
-
-            if (ured == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(ured);
+            return Ok(base.Get(id));
         }
 
         /// <summary>
-        /// Kreiraj Uredjaj.
+        /// Kreiraj uredjaj.
         /// </summary>
         /// <param name="ured">The ured.</param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult<UredjajDTO>> PostUredjaj(Uredjaj ured)
+        [HttpPost("PostUredjaj/{ured}")]
+        public IActionResult PostUredjaj(Uredjaj ured)
         {
-            using (var trans = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var postUredjaj = new UredjajDTO
-                    {
-                        ImeUredjaja = ured.ImeUredjaja
-                    };
-                    _context.Uredjaji.Add(ured);
-                    await _context.SaveChangesAsync();
-
-                    return Ok("Uredjaj kreiran!");
-                }
-                catch (Exception)
-                {
-
-                    return BadRequest();
-                }
-            }
-                
+            return Ok(base.Create(ured));
         }
 
         /// <summary>
-        /// Apdejt Uredjaja.
+        /// Apdejt Uredjaj.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <param name="uredj">The uredj.</param>
+        /// <param name="ured">The ured.</param>
         /// <returns></returns>
-        [HttpPut]
-        public IActionResult PutUredjaj(int id, Uredjaj uredj)
+        [HttpPut("PutUredjaj/{id}")]
+        public IActionResult PutUredjaj(int id, Uredjaj ured)
         {
-            using (var trans = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    if (id != uredj.UredjajId)
-                    {
-                        return BadRequest();
-                    }
-
-                    var ure = _context.Uredjaji.Find(id);
-                    ure.ImeUredjaja = uredj.ImeUredjaja;
-                    _context.SaveChanges();
-                    return Ok();
-                }
-                catch (Exception)
-                {
-
-                    return BadRequest();
-                }
-            }
-                
+            return Ok(base.Update(id, ured));
         }
 
         /// <summary>
-        /// Brisanje uredjaja.
+        /// Brisanje uredjaja sa proslijedjenim ID-em.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUredjaja(int id)
+        /// <returns>Odgovor kao rezultat brisanja uredjaja.</returns>
+        /// <response code="200">Ako je uredjaj obrisan uspjesno.</response>
+        /// <response code="500">Ako je bilo greske na serveru.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [HttpDelete("DeleteUredjaj/{id}")]
+        public IActionResult DeleteUredjaj(int id)
         {
-            var uredjaj = _context.Uredjaji.Find(id);
-
-            if (uredjaj == null)
-            {
-                return NotFound();
-            }
-
-            _context.Uredjaji.Remove(uredjaj);
-            _context.SaveChanges();
-
-            return Ok($"Urdjaj {uredjaj.ImeUredjaja} je obrisan!");
+            return Ok(base.Delete(id));
         }
     }
 }

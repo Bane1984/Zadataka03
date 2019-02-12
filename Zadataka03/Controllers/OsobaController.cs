@@ -12,31 +12,22 @@ namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OsobaController : ControllerBase
+    public class OsobaController : BaseController<Osoba>
     {
-        public readonly ZadatakContext _context;
 
-        public OsobaController(ZadatakContext context)
+        public OsobaController(ZadatakContext context):base(context)
         {
-            _context = context;
-            _context.Database.EnsureCreated();
         }
 
         /// <summary>
         /// Uzmi osobe.
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public IActionResult GetOsoba()
+        [HttpGet("get")]
+        public IActionResult Get()
         {
-            var osobe = from os in _context.Osobe
-                select new
-                {
-                    Ime = os.Ime,
-                    Prezime = os.Prezime,
-                    Kancelarijadto = os.Kancelarija.Opis
-                };
-            return Ok(osobe.ToList());  
+
+            return Ok(base.Get());
         }
 
         /// <summary>
@@ -48,7 +39,7 @@ namespace Zadataka03.Controllers
         public ActionResult GetOsobu(int id)
         {
 
-            var osoba = _context.Osobe
+            var osoba = base._dbSet
                 .Where(c => c.OsobaId == id)
                 .Select(b => new
                 {
@@ -72,110 +63,117 @@ namespace Zadataka03.Controllers
             return Ok(osoba);
         }
 
+
+
         /// <summary>
         /// Kreiraj osobu.
         /// </summary>
-        /// <param name="os">The os.</param>
-        /// <returns></returns>
-        [HttpPost]
-        public IActionResult PostOsoba(OsobaDTO os)
-        {
-            using(var trans = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    if (os != null)
-                    {
-                        var osoba = new Osoba()
-                        {
-                            Ime = os.Ime,
-                            Prezime = os.Prezime
-                        };
-                        _context.Osobe.Add(osoba);
-                        _context.SaveChanges();
-
-                        trans.Commit();
-
-                        return Ok();
-                    }
-                    
-                }
-                catch (Exception ex)
-                {
-
-                    return BadRequest();
-                }
-            }
-            
-
-            //bool kancelarije = _context.Kancelarije.Select(c => c.Opis).Contains(os.Kancelarijadto.Opis);
-
-            //if (kancelarije)
-            //{
-            //    int kanc = _context.Kancelarije.Where(c => c.Opis.Contains(os.Kancelarijadto.Opis)).Select(c => c.KancelarijaId).FirstOrDefault();
-
-            //}
-            //else
-            //{
-
-            //}
-
-
-            return Ok();
-        }
-
-        /// <summary>
-        /// Apdejt osobe.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
         /// <param name="osob">The osob.</param>
         /// <returns></returns>
-        [HttpPut]
-        public IActionResult PutOsoba(int id, Osoba osob)
+        [HttpPost("PostOsoba")]
+        public IActionResult PostOsoba(Osoba osob)
         {
-            using (var trans = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    if (id != osob.OsobaId)
-                    {
-                        return BadRequest();
-                    }
-
-                    var o = _context.Osobe.Find(id);
-                    o.Ime = osob.Ime;
-                    o.Prezime = osob.Prezime;
-                    _context.SaveChanges();
-                    return Ok(o);
-                }
-                catch (Exception)
-                {
-
-                    return BadRequest();
-                }
-            }
-            return Ok();
+            return Ok(base.Create(osob));
         }
 
+        ///// <summary>
+        ///// Kreiraj osobu.
+        ///// </summary>
+        ///// <param name="os">The os.</param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //public IActionResult PostOsoba(OsobaDTO os)
+        //{
+        //    using(var trans = _context.Database.BeginTransaction())
+        //    {
+        //        try
+        //        {
+        //            if (os != null)
+        //            {
+        //                var osoba = new Osoba()
+        //                {
+        //                    Ime = os.Ime,
+        //                    Prezime = os.Prezime
+        //                };
+        //                _context.Osobe.Add(osoba);
+        //                _context.SaveChanges();
+
+        //                trans.Commit();
+
+        //                return Ok();
+        //            }
+                    
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //            return BadRequest();
+        //        }
+        //    }
+            
+
+        //    //bool kancelarije = _context.Kancelarije.Select(c => c.Opis).Contains(os.Kancelarijadto.Opis);
+
+        //    //if (kancelarije)
+        //    //{
+        //    //    int kanc = _context.Kancelarije.Where(c => c.Opis.Contains(os.Kancelarijadto.Opis)).Select(c => c.KancelarijaId).FirstOrDefault();
+
+        //    //}
+        //    //else
+        //    //{
+
+        //    //}
+
+
+        //    return Ok();
+        //}
+
+        ///// <summary>
+        ///// Apdejt osobe.
+        ///// </summary>
+        ///// <param name="id">The identifier.</param>
+        ///// <param name="osob">The osob.</param>
+        ///// <returns></returns>
+        //[HttpPut]
+        //public IActionResult PutOsoba(int id, Osoba osob)
+        //{
+        //    using (var trans = _context.Database.BeginTransaction())
+        //    {
+        //        try
+        //        {
+        //            if (id != osob.OsobaId)
+        //            {
+        //                return BadRequest();
+        //            }
+
+        //            var o = _context.Osobe.Find(id);
+        //            o.Ime = osob.Ime;
+        //            o.Prezime = osob.Prezime;
+        //            _context.SaveChanges();
+        //            return Ok(o);
+        //        }
+        //        catch (Exception)
+        //        {
+
+        //            return BadRequest();
+        //        }
+        //    }
+        //    return Ok();
+        //}
+
         /// <summary>
-        /// Brisanje osobe.
+        /// Brisanje osobe sa proslijedjenim ID-em.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOsobe(int id)
+        /// <returns>Odgovor kao rezultat brisanja osobe.</returns>
+        /// <response code="200">Ako je osoba obrisana uspjesno.</response>
+        /// <response code="500">Ako je bilo greske na serveru.</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [HttpDelete("DeleteOsobe/{id}")]
+        public IActionResult DeleteOsobe(int id)
         {
-            var osoba = await _context.Osobe.FindAsync(id);
-
-            if (osoba == null)
-            {
-                return NotFound();
-            }
-
-            _context.Osobe.Remove(osoba);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(base.Delete(id));
         }
     }
 }
