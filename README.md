@@ -1,4 +1,4 @@
-## Zadatak za vježbu I-05.02.2019
+## Zadatak za vježbu I - 05.02.2019
 
 Napraviti ASP.NET Core WebAPI aplikaciju koja služi za evidenciju uređaja i osoba koji ih koriste. Modele definisati poštujući sledeća pravila:
 
