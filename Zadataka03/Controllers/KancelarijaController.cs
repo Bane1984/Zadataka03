@@ -11,15 +11,16 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.VisualStudio.Web.CodeGeneration;
 using Zadataka03.DTO;
 using Zadataka03.Models;
+using AutoMapper;
 //using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KancelarijaController : BaseController<Kancelarija>
+    public class KancelarijaController : BaseController<Kancelarija, KancelarijaDTO>
     {
-        public KancelarijaController(ZadatakContext context):base(context)
+        public KancelarijaController(ZadatakContext context, IMapper mapper):base(context, mapper)
         {
         }
 
@@ -31,7 +32,7 @@ namespace Zadataka03.Controllers
         public IActionResult Get()
         {
             
-            return Ok(base.Get());
+            return base.Get();
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace Zadataka03.Controllers
         [HttpGet("GetKancelarija/{id}")]
         public IActionResult GetKancelarija(int id)
         {
-            return Ok(base.Get(id));
+            return base.Get(id);
         }
 
         /// <summary>
@@ -50,10 +51,10 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="kancelar">The kancelar.</param>
         /// <returns></returns>
-        [HttpPost("PostKancelarija/{kancelar}")]
-        public IActionResult PostKancelarija(Kancelarija kancelar)
+        [HttpPost("PostKancelarija")]
+        public IActionResult PostKancelarija(KancelarijaDTO kancelar)
         {
-            return Ok(base.Create(kancelar));
+            return base.Create(kancelar);
         }
 
         /// <summary>
@@ -62,10 +63,10 @@ namespace Zadataka03.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="kanc">The kanc.</param>
         /// <returns></returns>
-        [HttpPut]
-        public IActionResult PutKancelarija(int id, Kancelarija kanc)
+        [HttpPut("PutKancelarija")]
+        public IActionResult PutKancelarija(int id, KancelarijaDTO kanc)
         {
-            return Ok(base.Update(id, kanc));
+            return base.Update(id, kanc);
         }
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace Zadataka03.Controllers
         [HttpDelete("DeleteKancelarija/{id}")]
         public IActionResult DeleteKancelarija(int id)
         {
-            return Ok(base.Delete(id));
+            return base.Delete(id);
         }
     }
 }

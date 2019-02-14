@@ -7,15 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zadataka03.Models;
 using Zadataka03.DTO;
+using AutoMapper;
 
 namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OsobaController : BaseController<Osoba>
+    public class OsobaController : BaseController<Osoba, OsobaDTO>
     {
 
-        public OsobaController(ZadatakContext context):base(context)
+        public OsobaController(ZadatakContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
@@ -27,7 +28,7 @@ namespace Zadataka03.Controllers
         public IActionResult Get()
         {
 
-            return Ok(base.Get());
+            return base.Get();
         }
 
         /// <summary>
@@ -71,9 +72,9 @@ namespace Zadataka03.Controllers
         /// <param name="osob">The osob.</param>
         /// <returns></returns>
         [HttpPost("PostOsoba")]
-        public IActionResult PostOsoba(Osoba osob)
+        public IActionResult PostOsoba(OsobaDTO osob)
         {
-            return Ok(base.Create(osob));
+            return base.Create(osob);
         }
 
         ///// <summary>
@@ -173,7 +174,7 @@ namespace Zadataka03.Controllers
         [HttpDelete("DeleteOsobe/{id}")]
         public IActionResult DeleteOsobe(int id)
         {
-            return Ok(base.Delete(id));
+            return base.Delete(id);
         }
     }
 }

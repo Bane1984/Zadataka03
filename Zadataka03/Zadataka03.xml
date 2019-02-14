@@ -4,27 +4,27 @@
         <name>Zadataka03</name>
     </assembly>
     <members>
-        <member name="M:Zadataka03.Controllers.BaseController`1.Get">
+        <member name="M:Zadataka03.Controllers.BaseController`2.Get">
             <summary>
             Uzimanje svega iz tebele.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.BaseController`1.Get(System.Int32)">
+        <member name="M:Zadataka03.Controllers.BaseController`2.Get(System.Int32)">
             <summary>
             Pretraga po ID-u.
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.BaseController`1.Create(`0)">
+        <member name="M:Zadataka03.Controllers.BaseController`2.Create(`1)">
             <summary>
             Kreiranje objekta.
             </summary>
             <param name="objekat"></param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.BaseController`1.Update(System.Int32,`0)">
+        <member name="M:Zadataka03.Controllers.BaseController`2.Update(System.Int32,`1)">
             <summary>
             Mijenjanje objekta.
             </summary>
@@ -32,11 +32,46 @@
             <param name="objekat"></param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.BaseController`1.Delete(System.Int32)">
+        <member name="M:Zadataka03.Controllers.BaseController`2.Delete(System.Int32)">
             <summary>
             Brisanje objekta.
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseDTOController`2.GetAll">
+            <summary>
+            Gets all.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseDTOController`2.GetId(System.Int32)">
+            <summary>
+            Gets the identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseDTOController`2.Create(`1)">
+            <summary>
+            Creates the specified object.
+            </summary>
+            <param name="obj">The object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseDTOController`2.Update(System.Int32,`1)">
+            <summary>
+            Updates the specified identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="obj">The object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.BaseDTOController`2.Delete(System.Int32)">
+            <summary>
+            Deletes the specified identifier.
+            </summary>
+            <param name="id">The identifier.</param>
             <returns></returns>
         </member>
         <member name="M:Zadataka03.Controllers.KancelarijaController.Get">
@@ -52,14 +87,14 @@
             <param name="id">The identifier.</param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.KancelarijaController.PostKancelarija(Zadataka03.Models.Kancelarija)">
+        <member name="M:Zadataka03.Controllers.KancelarijaController.PostKancelarija(Zadataka03.DTO.KancelarijaDTO)">
             <summary>
             Kreiraj kancelariju.
             </summary>
             <param name="kancelar">The kancelar.</param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.KancelarijaController.PutKancelarija(System.Int32,Zadataka03.Models.Kancelarija)">
+        <member name="M:Zadataka03.Controllers.KancelarijaController.PutKancelarija(System.Int32,Zadataka03.DTO.KancelarijaDTO)">
             <summary>
             Apdejt kancelarije.
             </summary>
@@ -89,7 +124,7 @@
             <param name="id">The identifier.</param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.OsobaController.PostOsoba(Zadataka03.Models.Osoba)">
+        <member name="M:Zadataka03.Controllers.OsobaController.PostOsoba(Zadataka03.DTO.OsobaDTO)">
             <summary>
             Kreiraj osobu.
             </summary>
@@ -118,14 +153,14 @@
             <param name="id">The identifier.</param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.UredjajController.PostUredjaj(Zadataka03.Models.Uredjaj)">
+        <member name="M:Zadataka03.Controllers.UredjajController.PostUredjaj(Zadataka03.DTO.UredjajDTO)">
             <summary>
             Kreiraj uredjaj.
             </summary>
             <param name="ured">The ured.</param>
             <returns></returns>
         </member>
-        <member name="M:Zadataka03.Controllers.UredjajController.PutUredjaj(System.Int32,Zadataka03.Models.Uredjaj)">
+        <member name="M:Zadataka03.Controllers.UredjajController.PutUredjaj(System.Int32,Zadataka03.DTO.UredjajDTO)">
             <summary>
             Apdejt Uredjaj.
             </summary>
@@ -173,6 +208,41 @@
         <member name="M:Zadataka03.Controllers.UredjajUzetVracenController.DeleteUredjaja(System.Int32)">
             <summary>
             Brisanje UredjajUzetVraceni.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UserController.Get">
+            <summary>
+            Gets this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UserController.Get(System.Int32)">
+            <summary>
+            Pretraga po ID-u.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UserController.Create(Zadataka03.DTO.UserDTO)">
+            <summary>
+            Kreiraj korisnnika.
+            </summary>
+            <param name="use">The use.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UserController.Update(System.Int32,Zadataka03.DTO.UserDTO)">
+            <summary>
+            Update korisnika.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="user">The user.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zadataka03.Controllers.UserController.Delete(System.Int32)">
+            <summary>
+            Brisanje korisnika.
             </summary>
             <param name="id">The identifier.</param>
             <returns></returns>

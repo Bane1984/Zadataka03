@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zadataka03.Models;
 
 namespace Zadataka03.Migrations
 {
     [DbContext(typeof(ZadatakContext))]
-    partial class ZadatakContextModelSnapshot : ModelSnapshot
+    [Migration("20190213074638_dodatAutoMapper")]
+    partial class dodatAutoMapper
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,23 +87,6 @@ namespace Zadataka03.Migrations
                     b.HasIndex("UredjajId");
 
                     b.ToTable("UredjajUzetVraceni");
-                });
-
-            modelBuilder.Entity("Zadataka03.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("Ime");
-
-                    b.Property<string>("Prezime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Zadataka03.Models.Osoba", b =>

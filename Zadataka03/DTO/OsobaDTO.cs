@@ -9,7 +9,6 @@ namespace Zadataka03.DTO
 {
     public class OsobaDTO
     {
-        //public int OsobaId { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }
         public  string ImeUredjaja { get; set; }

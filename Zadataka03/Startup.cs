@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,8 +33,10 @@ namespace Zadataka03
         {
             //services.AddDbContext<ZadatakContext>(opt =>
             //    opt.UseInMemoryDatabase("ZadatakList"));
+            services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<ZadatakContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:ZadatakDB"]));
+            
 
             services.AddSwaggerGen(c =>
             {
@@ -64,10 +67,10 @@ namespace Zadataka03
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMapper autoMapper)
         {
-            
-            
+            //autoMapper.ConfigurationProvider.AssertConfigurationIsValid();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

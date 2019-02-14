@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +13,11 @@ namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UredjajController : BaseController<Uredjaj>
+    public class UredjajController : BaseController<Uredjaj, UredjajDTO>
     {
 
 
-        public UredjajController(ZadatakContext context) : base(context)
+        public UredjajController(ZadatakContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
@@ -28,7 +29,7 @@ namespace Zadataka03.Controllers
         public IActionResult Get()
         {
 
-            return Ok(base.Get());
+            return base.Get();
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace Zadataka03.Controllers
         [HttpGet("GetUredjaje/{id}")]
         public IActionResult GetUredjaje(int id)
         {
-            return Ok(base.Get(id));
+            return base.Get(id);
         }
 
         /// <summary>
@@ -48,9 +49,9 @@ namespace Zadataka03.Controllers
         /// <param name="ured">The ured.</param>
         /// <returns></returns>
         [HttpPost("PostUredjaj/{ured}")]
-        public IActionResult PostUredjaj(Uredjaj ured)
+        public IActionResult PostUredjaj(UredjajDTO ured)
         {
-            return Ok(base.Create(ured));
+            return base.Create(ured);
         }
 
         /// <summary>
@@ -60,9 +61,9 @@ namespace Zadataka03.Controllers
         /// <param name="ured">The ured.</param>
         /// <returns></returns>
         [HttpPut("PutUredjaj/{id}")]
-        public IActionResult PutUredjaj(int id, Uredjaj ured)
+        public IActionResult PutUredjaj(int id, UredjajDTO ured)
         {
-            return Ok(base.Update(id, ured));
+            return base.Update(id, ured);
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace Zadataka03.Controllers
         [HttpDelete("DeleteUredjaj/{id}")]
         public IActionResult DeleteUredjaj(int id)
         {
-            return Ok(base.Delete(id));
+            return base.Delete(id);
         }
     }
 }

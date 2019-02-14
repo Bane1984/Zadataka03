@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
@@ -14,16 +16,22 @@ namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaseController<T> : Controller where T : class
+    public class BaseController<T, Tdto> : Controller 
+                                                    where T : class 
+                                                    where Tdto : class
     {
         private readonly ZadatakContext _context;
         public readonly DbSet<T> _dbSet;
+        private IMapper _mapper;
 
-        public BaseController(ZadatakContext context)
+
+        public BaseController(ZadatakContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
             _dbSet = _context.Set<T>();
         }
+
 
         /// <summary>
         /// Uzimanje svega iz tebele.
@@ -32,7 +40,8 @@ namespace Zadataka03.Controllers
         [HttpGet("get")]
         protected virtual IActionResult Get()
         {
-            return Ok(_dbSet.Select(c => c).ToList());
+            var result = _dbSet.ProjectTo<Tdto>(_mapper.ConfigurationProvider).ToList();
+            return Ok(result);
         }
 
         /// <summary>
@@ -49,8 +58,9 @@ namespace Zadataka03.Controllers
                 return NotFound($"Sa ID = {id} ne postoji zapis");
             }
 
-            return Ok($"Navedeni ID= {id} nosi u sebi zapis {result}.");
+            return Ok($"Pod ID = {id} se nalazi objekat {result} .");
         }
+
 
         /// <summary>
         /// Kreiranje objekta.
@@ -58,33 +68,36 @@ namespace Zadataka03.Controllers
         /// <param name="objekat"></param>
         /// <returns></returns>
         [HttpPost("create")]
-        protected virtual IActionResult Create(T objekat)
+        protected virtual IActionResult Create(Tdto objekat)
         {
             using (var trans = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    if (objekat == null)
-                    {
-                        return NoContent();
-                    }
+                    //if (objekat == null)
+                    //{
+                    //    return NoContent();
+                    //}
 
-                    var str = typeof(T).FullName;
+                    //var str = typeof(T).FullName;
                     
-                    if (str == "Osoba")
-                    {
-                        var osDto = new OsobaDTO();
-                        var osoba = new Osoba()
-                        {
-                            Ime = osDto.Ime,
-                            Prezime = osDto.Prezime
-                        };
-                        _context.Add(osoba);
-                        _context.SaveChanges();
-                        trans.Commit();
-                        return Ok("Osoba je kreirana!");
-                    }
-                    _context.Add(objekat);
+                    //if (str == "Osoba")
+                    //{
+                    //    var osDto = new OsobaDTO();
+                    //    var osoba = new Osoba()
+                    //    {
+                    //        Ime = osDto.Ime,
+                    //        Prezime = osDto.Prezime
+                    //    };
+                    //    var os = _mapper.Map<Osoba>(objekat);
+                    //    _context.Add(os);
+                    //    _context.SaveChanges();
+                    //    trans.Commit();
+                    //    return Ok("Osoba je kreirana!");
+                    //}
+
+                    var obT = _mapper.Map<T>(objekat);
+                    _context.Add(obT);
                     _context.SaveChanges();
                     trans.Commit();
                     return Ok();
@@ -103,13 +116,15 @@ namespace Zadataka03.Controllers
         /// <param name="objekat"></param>
         /// <returns></returns>
         [HttpPut("update/{id}")]
-        protected virtual IActionResult Update(int id, T objekat)
+        protected virtual IActionResult Update(int id, Tdto objekat)
         {
             using (var trans = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    var a = _context.Attach(objekat).Entity;
+                    var mid = _dbSet.Find(id);
+                    var map = _mapper.Map<Tdto,T>(objekat, mid);
+                    var a = _context.Attach(map).Entity;
                     _context.Entry(a).State = EntityState.Modified;
                     _context.SaveChanges();
                     trans.Commit();
