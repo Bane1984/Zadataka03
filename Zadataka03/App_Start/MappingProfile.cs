@@ -13,9 +13,6 @@ namespace Zadataka03.Models
     {
         public MappingProfile()
         {
-            CreateMap<User, UserDTO>();
-            CreateMap<UserDTO, User>();
-
             CreateMap<Kancelarija, KancelarijaDTO>();
             CreateMap<KancelarijaDTO, Kancelarija>();
 
@@ -24,6 +21,9 @@ namespace Zadataka03.Models
 
             CreateMap<Osoba, OsobaDTO>();
             CreateMap<OsobaDTO, Osoba>();
+
+            CreateMap<UredjajUzetVracen, UredjajUzetVracenDTO>();
+            CreateMap<UredjajUzetVracenDTO, UredjajUzetVracen>();
         }
     }
 }

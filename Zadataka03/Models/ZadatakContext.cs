@@ -28,7 +28,6 @@ namespace Zadataka03.Models
         public DbSet<Kancelarija> Kancelarije { get; set; }
         public DbSet<Uredjaj> Uredjaji { get; set; }
         public DbSet<UredjajUzetVracen> UredjajUzetVraceni { get; set; }
-        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
