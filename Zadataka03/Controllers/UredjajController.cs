@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zadataka03.DTO;
 using Zadataka03.Models;
+using Zadataka03.Repositories;
+using Zadataka03.UnitOfWork;
 
 namespace Zadataka03.Controllers
 {
@@ -15,10 +17,15 @@ namespace Zadataka03.Controllers
     [ApiController]
     public class UredjajController : BaseController<Uredjaj, UredjajDTO>
     {
+        public readonly IUredjaj _repository;
+        public readonly IMapper _mapper;
+        public readonly IUnitOfWork _unitOfWork;
 
-
-        public UredjajController(ZadatakContext context, IMapper mapper) : base(context, mapper)
+        public UredjajController(IUredjaj repository, IUnitOfWork unitOfWork, IMapper mapper) : base(repository, unitOfWork, mapper)
         {
+            _repository = repository;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -26,7 +33,7 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("get")]
-        public IActionResult Get()
+        public IActionResult GetUredjaje()
         {
 
             return base.Get();
@@ -37,10 +44,10 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [HttpGet("GetUredjaje/{id}")]
-        public IActionResult GetUredjaje(int id)
+        [HttpGet("geturedjaj/{id}")]
+        public IActionResult GetUredjaj(int id)
         {
-            return base.Get(id);
+            return base.GetId(id);
         }
 
         /// <summary>
@@ -48,7 +55,7 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="ured">The ured.</param>
         /// <returns></returns>
-        [HttpPost("PostUredjaj/{ured}")]
+        [HttpPost("posturedjaj/{ured}")]
         public IActionResult PostUredjaj(UredjajDTO ured)
         {
             return base.Create(ured);
@@ -60,7 +67,7 @@ namespace Zadataka03.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="ured">The ured.</param>
         /// <returns></returns>
-        [HttpPut("PutUredjaj/{id}")]
+        [HttpPut("puturedjaj/{id}")]
         public IActionResult PutUredjaj(int id, UredjajDTO ured)
         {
             return base.Update(id, ured);
@@ -75,7 +82,7 @@ namespace Zadataka03.Controllers
         /// <response code="500">Ako je bilo greske na serveru.</response>
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        [HttpDelete("DeleteUredjaj/{id}")]
+        [HttpDelete("deleteuredjaj/{id}")]
         public IActionResult DeleteUredjaj(int id)
         {
             return base.Delete(id);

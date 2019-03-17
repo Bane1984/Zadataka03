@@ -18,8 +18,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using Zadataka03.Controllers;
-
+using Zadataka03.Filters;
+using Zadataka03.Services;
 using Zadataka03.Models;
+using Zadataka03.Repositories;
+using Zadataka03.UnitOfWork;
 
 namespace Zadataka03
 {
@@ -38,10 +41,26 @@ namespace Zadataka03
             //services.AddDbContext<ZadatakContext>(opt =>
             //    opt.UseInMemoryDatabase("ZadatakList"));
             services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
+            //registracija filtera
+            services.AddMvc(option =>
+            {
+                option.Filters.Add(typeof(UnitOfWorkFilter));
+                option.Filters.Add(typeof(CustomExceptionService));
+                option.Filters.Add(typeof(ResultExceptionFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<ZadatakContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:ZadatakDB"]));
 
+            //DI - gdje god dodamo interfejs u konstuktoru ce se kreirati instanca repozitorijuma
+            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddScoped<IOsoba, ROsoba>();
+            //services.AddScoped<IUredjaj, RUredjaj>();
+            //services.AddScoped<IKancelarija, RKancelarija>();
+            //services.AddScoped<IUredjajUzetVracen, RUredjajUzetVracen>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
+            //servisi dodati preko atributa
+            services.AddDIService();
 
             services.AddSwaggerGen(c =>
             {

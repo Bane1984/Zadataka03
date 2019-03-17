@@ -16,31 +16,45 @@ namespace Zadataka03.Filters
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            var start = false;
+            var request = context.HttpContext.Request.Method.Equals("GET");
+            var exceptionRequest = context.HttpContext.Request.QueryString;
             _unitOfWork.Start();
             var success = false;
+
+            if (!request)
+            {
+                _unitOfWork.Start();
+                start = true;
+            }
             try
             {
                 await next();
-
-                _unitOfWork.Complete();
-                success = true;
+                if (start)
+                {
+                    _unitOfWork.Complete();
+                    success = true;
+                }
             }
-            catch (Exception)
+            catch (InvalidQuantityException e)
             {
                 success = false;
-                throw;
             }
             finally
             {
-                if (success)
+                if (!request)
                 {
-                    _unitOfWork.Commit();
-                    _unitOfWork.Dispose();
+                    if (success)
+                    {
+                        _unitOfWork.Commit();
+                        _unitOfWork.Dispose();
+                    }
+                    else
+                    {
+                        _unitOfWork.Dispose();
+                    }
                 }
-                else
-                {
-                    _unitOfWork.Dispose();
-                }
+                
             }
         }
     }

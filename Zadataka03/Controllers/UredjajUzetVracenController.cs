@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zadataka03.Models;
 using Zadataka03.DTO;
+using Zadataka03.Repositories;
+using Zadataka03.UnitOfWork;
 
 
 //PUT i POST nisu realizovani
@@ -14,15 +17,25 @@ namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UredjajUzetVracenController : ControllerBase
+    public class UredjajUzetVracenController : BaseController<UredjajUzetVracen, UredjajUzetVracenDTO>
     {
+        public readonly IUredjajUzetVracen _uredjajuzetvracen;
+        public readonly IOsoba _osoba;
+        public readonly IUredjaj _uredjaj;
+        public readonly IMapper _mapper;
+        public readonly IUnitOfWork _unitofwork;
         public readonly ZadatakContext _context;
 
-        public UredjajUzetVracenController(ZadatakContext context)
+        public UredjajUzetVracenController(IRepository<UredjajUzetVracen> repository, IUnitOfWork unitOfWork, IMapper mapper, IUredjajUzetVracen uredjajuzetvracen, IOsoba osoba, IUredjaj uredjaj, IUnitOfWork unitofwork) : base(repository, unitOfWork, mapper)
         {
-            _context = context;
-            _context.Database.EnsureCreated();
+            _uredjajuzetvracen = uredjajuzetvracen;
+            _osoba = osoba;
+            _uredjaj = uredjaj;
+            _mapper = mapper;
+            _unitofwork = unitofwork;   
         }
+
+        
 
         /// <summary>
         /// Uzmi UredjajUzetVraceni.
@@ -31,7 +44,8 @@ namespace Zadataka03.Controllers
         [HttpGet]
         public ActionResult GetUredjajUzetVracen()
         {
-            return Ok(_context.UredjajUzetVraceni.Select(c => c).ToList());
+            var uredj = base.Get();
+            return Ok(uredj);
         }
 
         /// <summary>
@@ -42,7 +56,7 @@ namespace Zadataka03.Controllers
         [HttpGet("{id}")]
         public ActionResult<UredjajUzetVracen> GetUredjajUzetVracen(int id)
         {
-            var ured = _context.UredjajUzetVraceni.Find(id);
+            var ured = base.GetId(id);
 
             if (ured == null)
             {
@@ -144,25 +158,39 @@ namespace Zadataka03.Controllers
         //    return NoContent();
         //}
 
+        ///// <summary>
+        ///// Brisanje UredjajUzetVraceni.
+        ///// </summary>
+        ///// <param name="id">The identifier.</param>
+        ///// <returns></returns>
+        //[HttpDelete("{id}")]
+        //public IActionResult DeleteUredjaja(int id)
+        //{
+        //    var uredjaj = _context.UredjajUzetVraceni.Find(id);
+
+        //    if (uredjaj == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _context.UredjajUzetVraceni.Remove(uredjaj);
+        //    _context.SaveChanges();
+
+        //    return Ok($"Uredjaj {uredjaj} je obrisan.");
+        //}
+
+
         /// <summary>
-        /// Brisanje UredjajUzetVraceni.
+        /// Brisanje objekta.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUredjaja(int id)
+        [HttpDelete("obrisati")]
+        public IActionResult Delete(int id)
         {
-            var uredjaj = _context.UredjajUzetVraceni.Find(id);
-
-            if (uredjaj == null)
-            {
-                return NotFound();
-            }
-
-            _context.UredjajUzetVraceni.Remove(uredjaj);
-            _context.SaveChanges();
-
-            return Ok($"Uredjaj {uredjaj} je obrisan.");
+            return base.Delete(id);
         }
+
+
     }
 }

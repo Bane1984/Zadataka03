@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Zadataka03.Models;
 using Zadataka03.DTO;
 using AutoMapper;
+using Zadataka03.Repositories;
+using Zadataka03.UnitOfWork;
 
 namespace Zadataka03.Controllers
 {
@@ -15,9 +18,16 @@ namespace Zadataka03.Controllers
     [ApiController]
     public class OsobaController : BaseController<Osoba, OsobaDTO>
     {
-
-        public OsobaController(ZadatakContext context, IMapper mapper) : base(context, mapper)
+        public readonly IOsoba _repository;
+        public readonly IKancelarija _kancelarija;
+        public readonly IMapper _mapper;
+        public readonly IUnitOfWork _unitOfWork;
+        public OsobaController(IOsoba repository, IUnitOfWork unitOfWork, IKancelarija kancelarija, IMapper mapper) : base(repository, unitOfWork, mapper)
         {
+            _repository = repository;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _kancelarija = kancelarija;
         }
 
         /// <summary>
@@ -39,29 +49,31 @@ namespace Zadataka03.Controllers
         [HttpGet("{id}")]
         public ActionResult GetOsobu(int id)
         {
-
-            var osoba = base._dbSet
-                .Where(c => c.OsobaId == id)
-                .Select(b => new
-                {
-                    Ime = b.Ime,
-                    Prezime = b.Prezime,
-                    Kancelarija = b.Kancelarija.Opis,
-                    Uredjaji = b.UzetiUredjaji.Select(n => new
-                    {
-                        ImeUredjaja = n.Uredjaj.ImeUredjaja,
-                        Uzet = n.Uzet,
-                        Vracen = n.Vracen
-                    })
-                })
-                .ToList();
-
-            if (osoba == null)
-            {
-                return NotFound();
-            }
-
+            var osoba = base.GetId(id);
             return Ok(osoba);
+
+            //var osoba = base._dbSet
+            //    .Where(c => c.OsobaId == id)
+            //    .Select(b => new
+            //    {
+            //        Ime = b.Ime,
+            //        Prezime = b.Prezime,
+            //        Kancelarija = b.Kancelarija.Opis,
+            //        Uredjaji = b.UzetiUredjaji.Select(n => new
+            //        {
+            //            ImeUredjaja = n.Uredjaj.ImeUredjaja,
+            //            Uzet = n.Uzet,
+            //            Vracen = n.Vracen
+            //        })
+            //    })
+            //    .ToList();
+
+            //if (osoba == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return Ok(osoba);
         }
 
 
@@ -74,7 +86,8 @@ namespace Zadataka03.Controllers
         [HttpPost("PostOsoba")]
         public IActionResult PostOsoba(OsobaDTO osob)
         {
-            return base.Create(osob);
+            var kreirati = base.Create(osob);
+            return Ok("Osoba kreirana.");
         }
 
         ///// <summary>
@@ -171,10 +184,24 @@ namespace Zadataka03.Controllers
         /// <response code="500">Ako je bilo greske na serveru.</response>
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        [HttpDelete("DeleteOsobe/{id}")]
+        [HttpDelete("deleteosobe/{id}")]
         public IActionResult DeleteOsobe(int id)
         {
             return base.Delete(id);
+        }
+
+        /// <summary>
+        /// Updates the osoba.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="update">The update.</param>
+        /// <returns></returns>
+        [HttpPut("updateosobe")]
+        public IActionResult UpdateOsoba(int id, OsobaDTO update)
+        {
+            var osoba = _repository.GetId(id);
+            _mapper.Map<OsobaDTO, Osoba>(update, osoba);
+            return Ok(osoba);
         }
     }
 }

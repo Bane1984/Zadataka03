@@ -34,7 +34,7 @@ namespace Zadataka03.UnitOfWork
 
         public void Dispose()
         {
-            _context.Dispose();
+            trans?.Dispose();
         }
     }
 }

@@ -12,6 +12,9 @@ using Microsoft.VisualStudio.Web.CodeGeneration;
 using Zadataka03.DTO;
 using Zadataka03.Models;
 using AutoMapper;
+using Zadataka03.Repositories;
+using Zadataka03.UnitOfWork;
+
 //using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Zadataka03.Controllers
@@ -20,8 +23,14 @@ namespace Zadataka03.Controllers
     [ApiController]
     public class KancelarijaController : BaseController<Kancelarija, KancelarijaDTO>
     {
-        public KancelarijaController(ZadatakContext context, IMapper mapper):base(context, mapper)
+        public readonly IKancelarija _repository;
+        public readonly IMapper _mapper;
+        public readonly IUnitOfWork _unitOfWork;
+        public KancelarijaController(IKancelarija repository, IUnitOfWork unitOfWork, IMapper mapper):base(repository, unitOfWork, mapper)
         {
+            _repository = repository;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -31,7 +40,6 @@ namespace Zadataka03.Controllers
         [HttpGet("get")]
         public IActionResult Get()
         {
-            
             return base.Get();
         }
 
@@ -40,10 +48,10 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [HttpGet("GetKancelarija/{id}")]
+        [HttpGet("getkancelarija/{id}")]
         public IActionResult GetKancelarija(int id)
         {
-            return base.Get(id);
+            return base.GetId(id);
         }
 
         /// <summary>
@@ -51,7 +59,7 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="kancelar">The kancelar.</param>
         /// <returns></returns>
-        [HttpPost("PostKancelarija")]
+        [HttpPost("postkancelarija")]
         public IActionResult PostKancelarija(KancelarijaDTO kancelar)
         {
             return base.Create(kancelar);
@@ -63,10 +71,13 @@ namespace Zadataka03.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="kanc">The kanc.</param>
         /// <returns></returns>
-        [HttpPut("PutKancelarija")]
+        [HttpPut("putkancelarija")]
         public IActionResult PutKancelarija(int id, KancelarijaDTO kanc)
         {
-            return base.Update(id, kanc);
+            var kancel = _repository.GetId(id);
+            kancel.Opis = kanc.Opis;
+            _repository.Update(id, kancel);
+            return Ok("Kancelarija apdejtovan!");
         }
 
         /// <summary>
@@ -78,7 +89,7 @@ namespace Zadataka03.Controllers
         /// <response code="500">Ako je bilo greske na serveru.</response>
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        [HttpDelete("DeleteKancelarija/{id}")]
+        [HttpDelete("deletekancelarija/{id}")]
         public IActionResult DeleteKancelarija(int id)
         {
             return base.Delete(id);

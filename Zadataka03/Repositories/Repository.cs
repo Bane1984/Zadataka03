@@ -43,7 +43,7 @@ namespace Zadataka03.Repositories
             var ureFind = _context.Set<T>().Find(id);
             if (ureFind == null)
             {
-                throw new InvalidQuantityException("Trazeni entitet nije pronadjen.");
+                throw new InvalidQuantityException("Trazeni entitet nije pronadjen, zato ne moze biti apdejtovan.");
             }
             var apdejtuj = _context.Set<T>().Attach(entitet);
             apdejtuj.State = EntityState.Modified;
@@ -55,7 +55,7 @@ namespace Zadataka03.Repositories
             //ovdje ubaciti eksepsn
             if (find == null)
             {
-                throw new InvalidQuantityException("Trazeni entitet nije pronadjen.");
+                throw new InvalidQuantityException("Trazeni entitet nije pronadjen, zato ne moze biti obrisan.");
             }
             _context.Set<T>().Remove(find);
         }

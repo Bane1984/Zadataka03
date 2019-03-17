@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.EntityFrameworkCore;
 using Zadataka03.Models;
 using Zadataka03.DTO;
+using Zadataka03.Repositories;
+using Zadataka03.UnitOfWork;
+using Zadataka03.Filters;
 
 namespace Zadataka03.Controllers
 {
@@ -20,17 +23,18 @@ namespace Zadataka03.Controllers
                                                     where T : class 
                                                     where Tdto : class
     {
-        private readonly ZadatakContext _context;
-        public readonly DbSet<T> _dbSet;
+        private readonly IRepository<T> _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private IMapper _mapper;
 
 
-        public BaseController(ZadatakContext context, IMapper mapper)
+        public BaseController(IRepository<T> repository, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _repository = repository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _dbSet = _context.Set<T>();
         }
+
 
 
         /// <summary>
@@ -40,7 +44,7 @@ namespace Zadataka03.Controllers
         [HttpGet("get")]
         protected virtual IActionResult Get()
         {
-            var result = _dbSet.ProjectTo<Tdto>(_mapper.ConfigurationProvider).ToList();
+            var result = _mapper.Map<IEnumerable<Tdto>>(_repository.GetAll());
             return Ok(result);
         }
 
@@ -50,15 +54,19 @@ namespace Zadataka03.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("get/{id}")]
-        protected virtual IActionResult Get(int id)
+        protected virtual IActionResult GetId(int id)
         {
-            var result = _dbSet.Find(id);
-            if (result == null)
-            {
-                return NotFound($"Sa ID = {id} ne postoji zapis");
-            }
+            //var result = _dbSet.Find(id);
+            //if (result == null)
+            //{
+            //    return NotFound($"Sa ID = {id} ne postoji zapis");
+            //}
 
-            return Ok($"Pod ID = {id} se nalazi objekat {result} .");
+            //return Ok($"Pod ID = {id} se nalazi objekat {result} .");
+
+            var result = _repository.GetId(id);
+            var map = _mapper.Map<Tdto>(result);
+            return Ok(map);
         }
 
 
@@ -70,43 +78,50 @@ namespace Zadataka03.Controllers
         [HttpPost("create")]
         protected virtual IActionResult Create(Tdto objekat)
         {
-            using (var trans = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    //if (objekat == null)
-                    //{
-                    //    return NoContent();
-                    //}
 
-                    //var str = typeof(T).FullName;
+            var result = _mapper.Map<T>(objekat);
+            _repository.Create(result);
+            return Ok("Kreiran novi entitet.");
+
+
+
+            //using (var trans = _context.Database.BeginTransaction())
+            //{
+            //    try
+            //    {
+            //        //if (objekat == null)
+            //        //{
+            //        //    return NoContent();
+            //        //}
+
+            //        //var str = typeof(T).FullName;
                     
-                    //if (str == "Osoba")
-                    //{
-                    //    var osDto = new OsobaDTO();
-                    //    var osoba = new Osoba()
-                    //    {
-                    //        Ime = osDto.Ime,
-                    //        Prezime = osDto.Prezime
-                    //    };
-                    //    var os = _mapper.Map<Osoba>(objekat);
-                    //    _context.Add(os);
-                    //    _context.SaveChanges();
-                    //    trans.Commit();
-                    //    return Ok("Osoba je kreirana!");
-                    //}
+            //        //if (str == "Osoba")
+            //        //{
+            //        //    var osDto = new OsobaDTO();
+            //        //    var osoba = new Osoba()
+            //        //    {
+            //        //        Ime = osDto.Ime,
+            //        //        Prezime = osDto.Prezime
+            //        //    };
+            //        //    var os = _mapper.Map<Osoba>(objekat);
+            //        //    _context.Add(os);
+            //        //    _context.SaveChanges();
+            //        //    trans.Commit();
+            //        //    return Ok("Osoba je kreirana!");
+            //        //}
 
-                    var obT = _mapper.Map<T>(objekat);
-                    _context.Add(obT);
-                    _context.SaveChanges();
-                    trans.Commit();
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return BadRequest();
-                }
-            }
+            //        var obT = _mapper.Map<T>(objekat);
+            //        _context.Add(obT);
+            //        _context.SaveChanges();
+            //        trans.Commit();
+            //        return Ok();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        return BadRequest();
+            //    }
+            //}
         }
 
         /// <summary>
@@ -118,23 +133,28 @@ namespace Zadataka03.Controllers
         [HttpPut("update/{id}")]
         protected virtual IActionResult Update(int id, Tdto objekat)
         {
-            using (var trans = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    var mid = _dbSet.Find(id);
-                    var map = _mapper.Map<Tdto,T>(objekat, mid);
-                    var a = _context.Attach(map).Entity;
-                    _context.Entry(a).State = EntityState.Modified;
-                    _context.SaveChanges();
-                    trans.Commit();
-                    return Ok(a);
-                }
-                catch (Exception e)
-                {
-                    return BadRequest();
-                }
-            }
+            var result = _repository.GetId(id);
+            _mapper.Map(objekat, result);
+            _unitOfWork.Complete();
+            return Ok("Entite apdejtovan.");
+
+            //using (var trans = _context.Database.BeginTransaction())
+            //{
+            //    try
+            //    {
+            //        var mid = _dbSet.Find(id);
+            //        var map = _mapper.Map<Tdto,T>(objekat, mid);
+            //        var a = _context.Attach(map).Entity;
+            //        _context.Entry(a).State = EntityState.Modified;
+            //        _context.SaveChanges();
+            //        trans.Commit();
+            //        return Ok(a);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        return BadRequest();
+            //    }
+            //}
         }
 
         /// <summary>
@@ -145,22 +165,25 @@ namespace Zadataka03.Controllers
         [HttpDelete("delete/{id}")]
         protected virtual IActionResult Delete(int id)
         {
-            var nadji = _dbSet.Find(id);
-            try
-            {
-                if (nadji == null)
-                {
-                    return NotFound();
-                }
+            _repository.Delete(id);
+            return Ok("Entitet obrisan.");
 
-                _context.Remove(nadji);
-                _context.SaveChanges();
-                return Ok($"Uredjaj sa ID = {id} je obrisan!");
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
+            //var nadji = _dbSet.Find(id);
+            //try
+            //{
+            //    if (nadji == null)
+            //    {
+            //        return NotFound();
+            //    }
+
+            //    _context.Remove(nadji);
+            //    _context.SaveChanges();
+            //    return Ok($"Uredjaj sa ID = {id} je obrisan!");
+            //}
+            //catch (Exception e)
+            //{
+            //    return BadRequest();
+            //}
             
 
         }

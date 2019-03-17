@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Zadataka03.Models;
 
-namespace Zadataka03.Repositories
+namespace Zadataka03.Atributi
 {
-    public interface IUredjaj:IRepository<Uredjaj>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class AddScopedA:Attribute
     {
     }
 }
