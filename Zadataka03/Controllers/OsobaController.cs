@@ -35,11 +35,7 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("get")]
-        public IActionResult Get()
-        {
-
-            return base.Get();
-        }
+        public IActionResult GetOsobe() => base.Get();
 
         /// <summary>
         /// Uzmi osobu po ID-u sa informacijom u kojoj je kancelariji i koje uredjaje koristi..

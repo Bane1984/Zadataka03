@@ -38,7 +38,7 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("get")]
-        public IActionResult Get()
+        public IActionResult GetKancelarija()
         {
             return base.Get();
         }

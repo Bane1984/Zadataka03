@@ -29,11 +29,11 @@ namespace Zadataka03.Services
                             case DIEnum.Scoped:
                                 servics.AddScoped(inf, t);
                                 break;
-                            case DIEnum.Transient:
-                                servics.AddTransient(inf, type);
+                            case DIEnum.Singleton:
+                                servics.AddSingleton(inf, type);
                                 break;
                             default:
-                                servics.AddSingleton(inf, type);
+                                servics.AddTransient(inf, type);
                                 break;
                         }
                     }
@@ -44,11 +44,11 @@ namespace Zadataka03.Services
                             case DIEnum.Scoped:
                                 servics.AddScoped(inf, t);
                                 break;
-                            case DIEnum.Transient:
-                                servics.AddTransient(inf, type);
+                            case DIEnum.Singleton:
+                                servics.AddSingleton(inf, type);
                                 break;
                             default:
-                                servics.AddSingleton(inf, type);
+                                servics.AddTransient(inf, type);
                                 break;
                         }
                     }

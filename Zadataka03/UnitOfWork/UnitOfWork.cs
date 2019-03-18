@@ -4,13 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Zadataka03.Models;
 using Microsoft.EntityFrameworkCore.Storage;
+using Zadataka03.Atributi;
 
 namespace Zadataka03.UnitOfWork
 {
+    [Univerzalni]
     public class UnitOfWork:IUnitOfWork, IDisposable
     {
         private readonly ZadatakContext _context;
-        private IDbContextTransaction trans;
+        private IDbContextTransaction _trans;
 
         public UnitOfWork(ZadatakContext context)
         {
@@ -19,7 +21,7 @@ namespace Zadataka03.UnitOfWork
 
         public void Start()
         {
-            trans = _context.Database.BeginTransaction();
+            _trans = _context.Database.BeginTransaction();
         }
         public void Complete()
         {
@@ -28,13 +30,13 @@ namespace Zadataka03.UnitOfWork
 
         public void Commit()
         {
-            trans.Commit();
+            _trans.Commit();
         }
 
 
         public void Dispose()
         {
-            trans?.Dispose();
+            _trans?.Dispose();
         }
     }
 }

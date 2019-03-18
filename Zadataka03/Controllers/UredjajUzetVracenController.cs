@@ -186,7 +186,7 @@ namespace Zadataka03.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("obrisati")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteUzetVracen(int id)
         {
             return base.Delete(id);
         }

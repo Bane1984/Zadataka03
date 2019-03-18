@@ -19,13 +19,13 @@ namespace Zadataka03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaseController<T, Tdto> : Controller 
+    public class BaseController<T, TDto> : Controller 
                                                     where T : class 
-                                                    where Tdto : class
+                                                    where TDto : class
     {
         private readonly IRepository<T> _repository;
         private readonly IUnitOfWork _unitOfWork;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
 
         public BaseController(IRepository<T> repository, IUnitOfWork unitOfWork, IMapper mapper)
@@ -42,9 +42,9 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("get")]
-        protected virtual IActionResult Get()
+        public IActionResult Get()
         {
-            var result = _mapper.Map<IEnumerable<Tdto>>(_repository.GetAll());
+            var result = _mapper.Map<IEnumerable<TDto>>(_repository.GetAll());
             return Ok(result);
         }
 
@@ -54,7 +54,7 @@ namespace Zadataka03.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("get/{id}")]
-        protected virtual IActionResult GetId(int id)
+        public IActionResult GetId(int id)
         {
             //var result = _dbSet.Find(id);
             //if (result == null)
@@ -65,7 +65,7 @@ namespace Zadataka03.Controllers
             //return Ok($"Pod ID = {id} se nalazi objekat {result} .");
 
             var result = _repository.GetId(id);
-            var map = _mapper.Map<Tdto>(result);
+            var map = _mapper.Map<TDto>(result);
             return Ok(map);
         }
 
@@ -76,7 +76,7 @@ namespace Zadataka03.Controllers
         /// <param name="objekat"></param>
         /// <returns></returns>
         [HttpPost("create")]
-        protected virtual IActionResult Create(Tdto objekat)
+        public IActionResult Create(TDto objekat)
         {
 
             var result = _mapper.Map<T>(objekat);
@@ -131,7 +131,7 @@ namespace Zadataka03.Controllers
         /// <param name="objekat"></param>
         /// <returns></returns>
         [HttpPut("update/{id}")]
-        protected virtual IActionResult Update(int id, Tdto objekat)
+        public IActionResult Update(int id, TDto objekat)
         {
             var result = _repository.GetId(id);
             _mapper.Map(objekat, result);
@@ -163,7 +163,7 @@ namespace Zadataka03.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("delete/{id}")]
-        protected virtual IActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             _repository.Delete(id);
             return Ok("Entitet obrisan.");

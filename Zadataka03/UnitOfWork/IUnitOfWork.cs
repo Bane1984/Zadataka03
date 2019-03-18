@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Zadataka03.UnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         void Start();
         void Complete();
