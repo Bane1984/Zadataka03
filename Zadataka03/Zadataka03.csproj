@@ -11,9 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Abstract\**" />
     <Compile Remove="Interfaces\**" />
+    <Content Remove="Abstract\**" />
     <Content Remove="Interfaces\**" />
+    <EmbeddedResource Remove="Abstract\**" />
     <EmbeddedResource Remove="Interfaces\**" />
+    <None Remove="Abstract\**" />
     <None Remove="Interfaces\**" />
   </ItemGroup>
 
@@ -24,10 +28,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Abstract\" />
   </ItemGroup>
 
 </Project>
