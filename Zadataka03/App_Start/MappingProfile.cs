@@ -24,6 +24,8 @@ namespace Zadataka03.Models
 
             CreateMap<UredjajUzetVracen, UredjajUzetVracenDTO>();
             CreateMap<UredjajUzetVracenDTO, UredjajUzetVracen>();
+
+            CreateMap<UredjajUzetVracen, QueryInfoDTO>();
         }
     }
 }

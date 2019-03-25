@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Zadataka03.Atributi
 {
+    [AttributeUsage(AttributeTargets.Class)]
     public class Univerzalni:Attribute
     {
         public DIEnum Name { get; }

@@ -8,7 +8,7 @@ using Zadataka03.Repositories;
 
 namespace Zadataka03.Repositories
 {
-    [Univerzalni]
+    //[Univerzalni]
     public class ROsoba:Repository<Osoba>, IOsoba
     {
         private readonly ZadatakContext _context;

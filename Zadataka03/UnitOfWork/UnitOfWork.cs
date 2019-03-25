@@ -8,7 +8,7 @@ using Zadataka03.Atributi;
 
 namespace Zadataka03.UnitOfWork
 {
-    [Univerzalni]
+    //[Univerzalni]
     public class UnitOfWork:IUnitOfWork, IDisposable
     {
         private readonly ZadatakContext _context;

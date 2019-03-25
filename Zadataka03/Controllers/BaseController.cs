@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
-using Microsoft.EntityFrameworkCore;
-using Zadataka03.Models;
-using Zadataka03.DTO;
+using System.Collections.Generic;
 using Zadataka03.Repositories;
-using Zadataka03.UnitOfWork;
-using Zadataka03.Filters;
 
 namespace Zadataka03.Controllers
 {
@@ -24,14 +12,12 @@ namespace Zadataka03.Controllers
                                                     where TDto : class
     {
         private readonly IRepository<T> _repository;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
 
-        public BaseController(IRepository<T> repository, IUnitOfWork unitOfWork, IMapper mapper)
+        public BaseController(IRepository<T> repository, IMapper mapper)
         {
             _repository = repository;
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -135,7 +121,6 @@ namespace Zadataka03.Controllers
         {
             var result = _repository.GetId(id);
             _mapper.Map(objekat, result);
-            _unitOfWork.Complete();
             return Ok("Entite apdejtovan.");
 
             //using (var trans = _context.Database.BeginTransaction())

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Zadataka03.Expressionss
 {
@@ -9,6 +6,6 @@ namespace Zadataka03.Expressionss
     {
         // AND/OR
         public string Condition { get; set; }
-        public List<RuleInfo> Rules { get; set; }
+        public List<RuleInfo> Rules { get; set; } = new List<RuleInfo>();
     }
 }

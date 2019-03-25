@@ -41,26 +41,30 @@ namespace Zadataka03
             //services.AddDbContext<ZadatakContext>(opt =>
             //    opt.UseInMemoryDatabase("ZadatakList"));
             services.AddAutoMapper();
-            
+
+            //registracija konteksta
+            services.AddDbContext<ZadatakContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:ZadatakDB"]));
+
             //registracija filtera
+            //services.AddFiltersService();
+
             services.AddMvc(option =>
             {
                 option.Filters.Add(typeof(UnitOfWorkFilter));
                 option.Filters.Add(typeof(CustomExceptionService));
                 option.Filters.Add(typeof(ResultExceptionFilter));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<ZadatakContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:ZadatakDB"]));
+
 
             //DI - gdje god dodamo interfejs u konstuktoru ce se kreirati instanca repozitorijuma
-            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            //services.AddScoped<IOsoba, ROsoba>();
-            //services.AddScoped<IUredjaj, RUredjaj>();
-            //services.AddScoped<IKancelarija, RKancelarija>();
-            //services.AddScoped<IUredjajUzetVracen, RUredjajUzetVracen>();
-            //services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IOsoba, ROsoba>();
+            services.AddScoped<IUredjaj, RUredjaj>();
+            services.AddScoped<IKancelarija, RKancelarija>();
+            services.AddScoped<IUredjajUzetVracen, RUredjajUzetVracen>();
+            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
-            //servisi dodati preko atributa
-            services.AddDIService();
+
 
             services.AddSwaggerGen(c =>
             {
@@ -88,6 +92,10 @@ namespace Zadataka03
                 c.IncludeXmlComments(xmlPath);
 
             });
+
+            //Ne rade mi servisi preko atributa, provjeri sta se desava.
+            //servisi dodati preko atributa
+            //services.AddDIService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

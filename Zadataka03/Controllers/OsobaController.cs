@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Zadataka03.Models;
 using Zadataka03.DTO;
-using AutoMapper;
+using Zadataka03.Models;
 using Zadataka03.Repositories;
-using Zadataka03.UnitOfWork;
 
 namespace Zadataka03.Controllers
 {
@@ -21,12 +13,10 @@ namespace Zadataka03.Controllers
         public readonly IOsoba _repository;
         public readonly IKancelarija _kancelarija;
         public readonly IMapper _mapper;
-        public readonly IUnitOfWork _unitOfWork;
-        public OsobaController(IOsoba repository, IUnitOfWork unitOfWork, IKancelarija kancelarija, IMapper mapper) : base(repository, unitOfWork, mapper)
+        public OsobaController(IOsoba repository, IKancelarija kancelarija, IMapper mapper) : base(repository, mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _unitOfWork = unitOfWork;
             _kancelarija = kancelarija;
         }
 
@@ -34,7 +24,7 @@ namespace Zadataka03.Controllers
         /// Uzmi osobe.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("get")]
+        [HttpGet("getosobe")]
         public IActionResult GetOsobe() => base.Get();
 
         /// <summary>
@@ -42,7 +32,7 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("getosobu/{id}")]
         public ActionResult GetOsobu(int id)
         {
             var osoba = base.GetId(id);
@@ -79,11 +69,11 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="osob">The osob.</param>
         /// <returns></returns>
-        [HttpPost("PostOsoba")]
+        [HttpPost("postosoba")]
         public IActionResult PostOsoba(OsobaDTO osob)
         {
-            var kreirati = base.Create(osob);
-            return Ok("Osoba kreirana.");
+            var kreirana = base.Create(osob);
+            return Ok($"Osoba {kreirana} kreirana.");
         }
 
         ///// <summary>
@@ -192,7 +182,7 @@ namespace Zadataka03.Controllers
         /// <param name="id">The identifier.</param>
         /// <param name="update">The update.</param>
         /// <returns></returns>
-        [HttpPut("updateosobe")]
+        [HttpPut("updateosoba")]
         public IActionResult UpdateOsoba(int id, OsobaDTO update)
         {
             var osoba = _repository.GetId(id);

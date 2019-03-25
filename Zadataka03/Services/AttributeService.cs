@@ -10,7 +10,7 @@ namespace Zadataka03.Services
 {
     public static class AttributeService
     {
-        public static void AddDIService(this IServiceCollection servics)
+        public static void AddDIService(this IServiceCollection services)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             var types = assembly.GetTypes().Where(c => c.GetCustomAttributes<Univerzalni>().Any());
@@ -27,13 +27,13 @@ namespace Zadataka03.Services
                         switch (getEnum)
                         {
                             case DIEnum.Scoped:
-                                servics.AddScoped(inf, t);
+                                services.AddScoped(inf, t);
                                 break;
                             case DIEnum.Singleton:
-                                servics.AddSingleton(inf, type);
+                                services.AddSingleton(inf, type);
                                 break;
                             default:
-                                servics.AddTransient(inf, type);
+                                services.AddTransient(inf, type);
                                 break;
                         }
                     }
@@ -42,13 +42,13 @@ namespace Zadataka03.Services
                         switch (getEnum)
                         {
                             case DIEnum.Scoped:
-                                servics.AddScoped(inf, t);
+                                services.AddScoped(inf, t);
                                 break;
                             case DIEnum.Singleton:
-                                servics.AddSingleton(inf, type);
+                                services.AddSingleton(inf, type);
                                 break;
                             default:
-                                servics.AddTransient(inf, type);
+                                services.AddTransient(inf, type);
                                 break;
                         }
                     }

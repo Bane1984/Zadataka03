@@ -7,7 +7,7 @@ using Zadataka03.Models;
 
 namespace Zadataka03.Repositories
 {
-    [Univerzalni]
+    //[Univerzalni]
     public class RKancelarija:Repository<Kancelarija>, IKancelarija
     {
         private readonly ZadatakContext _context;

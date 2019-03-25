@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Zadataka03.Repositories
 {
-    public interface IRepository<T> where T: class
+    public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         T GetId(int id);

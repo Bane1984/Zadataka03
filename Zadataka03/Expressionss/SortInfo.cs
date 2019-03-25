@@ -10,6 +10,5 @@ namespace Zadataka03.Expressionss
     {
         public string Property { get; set; }
         public string SortDirection { get; set; }
-
     }
 }

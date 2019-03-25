@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Zadataka03.DTO;
 using Zadataka03.Models;
 using Zadataka03.Repositories;
-using Zadataka03.UnitOfWork;
 
 namespace Zadataka03.Controllers
 {
@@ -19,13 +12,11 @@ namespace Zadataka03.Controllers
     {
         public readonly IUredjaj _repository;
         public readonly IMapper _mapper;
-        public readonly IUnitOfWork _unitOfWork;
 
-        public UredjajController(IUredjaj repository, IUnitOfWork unitOfWork, IMapper mapper) : base(repository, unitOfWork, mapper)
+        public UredjajController(IUredjaj repository, IMapper mapper) : base(repository, mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _unitOfWork = unitOfWork;
         }
 
         /// <summary>

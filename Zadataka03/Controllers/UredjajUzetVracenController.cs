@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Zadataka03.Models;
+using System.Linq;
 using Zadataka03.DTO;
+using Zadataka03.Expressionss;
+using Zadataka03.Models;
 using Zadataka03.Repositories;
 using Zadataka03.UnitOfWork;
 
@@ -19,20 +15,18 @@ namespace Zadataka03.Controllers
     [ApiController]
     public class UredjajUzetVracenController : BaseController<UredjajUzetVracen, UredjajUzetVracenDTO>
     {
-        public readonly IUredjajUzetVracen _uredjajuzetvracen;
+        public readonly IUredjajUzetVracen _repository;
         public readonly IOsoba _osoba;
         public readonly IUredjaj _uredjaj;
         public readonly IMapper _mapper;
-        public readonly IUnitOfWork _unitofwork;
         public readonly ZadatakContext _context;
 
-        public UredjajUzetVracenController(IRepository<UredjajUzetVracen> repository, IUnitOfWork unitOfWork, IMapper mapper, IUredjajUzetVracen uredjajuzetvracen, IOsoba osoba, IUredjaj uredjaj, IUnitOfWork unitofwork) : base(repository, unitOfWork, mapper)
+        public UredjajUzetVracenController(IRepository<UredjajUzetVracen> repository, IMapper mapper, IUredjajUzetVracen uredjajuzetvracen, IOsoba osoba, IUredjaj uredjaj, IUnitOfWork unitofwork) : base(repository, mapper)
         {
-            _uredjajuzetvracen = uredjajuzetvracen;
+            _repository = uredjajuzetvracen;
             _osoba = osoba;
             _uredjaj = uredjaj;
-            _mapper = mapper;
-            _unitofwork = unitofwork;   
+            _mapper = mapper;   
         }
 
         
@@ -41,7 +35,7 @@ namespace Zadataka03.Controllers
         /// Uzmi UredjajUzetVraceni.
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("geturedjajuzetvracen")]
         public ActionResult GetUredjajUzetVracen()
         {
             var uredj = base.Get();
@@ -53,7 +47,7 @@ namespace Zadataka03.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("geturedjajuzetvracen/{id}")]
         public ActionResult<UredjajUzetVracen> GetUredjajUzetVracen(int id)
         {
             var ured = base.GetId(id);
@@ -191,6 +185,19 @@ namespace Zadataka03.Controllers
             return base.Delete(id);
         }
 
+
+        /// <summary>
+        /// Poziv QueryInfo
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="upit"></param>
+        /// <returns></returns>
+        [HttpPost("bassboosted")]
+        public IQueryable BassBoosted([FromBody] QueryInfo upit)
+        {
+            var query = _repository.QueryInfooo(upit);
+            return query;
+        }
 
     }
 }

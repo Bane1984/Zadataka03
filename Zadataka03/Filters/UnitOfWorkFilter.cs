@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Zadataka03.UnitOfWork;
 
@@ -18,7 +15,7 @@ namespace Zadataka03.Filters
         {
             var start = false;
             var request = context.HttpContext.Request.Method.Equals("GET");
-            var exceptionRequest = context.HttpContext.Request.QueryString;
+            //var exceptionRequest = context.HttpContext.Request.QueryString;
             _unitOfWork.Start();
             var success = false;
 
